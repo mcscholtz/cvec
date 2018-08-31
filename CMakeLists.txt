@@ -4,10 +4,10 @@ enable_testing()
 add_subdirectory(tests)
 include(Project.cmake)
 
-#LinkedList Sources
+#Project Sources
 set (PROJECT_SOURCES 
-    #${PROJECT_SOURCE_DIR}/source_goes_here.c
+    ${PROJECT_SOURCE_DIR}/source.c
 )
 
-#Add the linked list library as static
+#Add the library as static
 ADD_LIBRARY( ${PROJECT_LIB} STATIC ${PROJECT_SOURCES} )
