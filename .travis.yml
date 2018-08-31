@@ -1,0 +1,12 @@
+dist: trusty
+sudo: false
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+script:
+ - cmake .
+ - cmake --build . -- -j2
+- ctest -j2
