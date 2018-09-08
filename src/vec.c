@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdio.h>
 
 //Internal functions
+#define VEC_AT(index) ((char*)self->_array + self->_elemsize*(index))
 static void vec_realloc(struct vec * self, int size);
 
 //Member functions
@@ -11,6 +13,8 @@ static void vec_pushback(struct vec * self, void * elem);
 static void vec_popback(struct vec * self, void * elem);
 static void vec_reserve(struct vec * self, int size);
 static void vec_shrink(struct vec * self);
+static void vec_at(struct vec * self, int index, void * elem);
+static void vec_erase(struct vec * self, int index);
 
 struct vec vec_new(int elemsize)
 {
@@ -24,6 +28,8 @@ struct vec vec_new(int elemsize)
     self.pop_back = vec_popback;
     self.reserve = vec_reserve;
     self.shrink = vec_shrink;
+    self.at = vec_at;
+    self.erase = vec_erase;
     return self;
 }
 
@@ -58,7 +64,7 @@ static void vec_pushback(struct vec * self, void * elem)
         vec_realloc(self, self->_capacity*2);
     }
     //insert
-    memcpy((char*)self->_array + self->_elemsize*self->_size,elem,self->_elemsize);
+    memcpy(VEC_AT(self->_size),elem,self->_elemsize);
     self->_size++;
 }
 
@@ -66,7 +72,7 @@ static void vec_popback(struct vec * self, void * elem)
 {
     assert(self->_size > 0);
     self->_size--;
-    memcpy(elem,(char*)self->_array + self->_elemsize*self->_size, self->_elemsize);
+    memcpy(elem,VEC_AT(self->_size), self->_elemsize);
 }
 
 static void vec_reserve(struct vec * self, int size)
@@ -84,4 +90,19 @@ static void vec_shrink(struct vec * self)
     void * ptr = realloc(self->_array, self->_size);
     assert(ptr != NULL);
     self->_capacity = self->_size;
+}
+
+static void vec_at(struct vec * self, int index, void * elem)
+{
+    assert(self != NULL);
+    assert(self->_size >= index && "Index out of range");
+    memcpy(elem,VEC_AT(index), self->_elemsize);
+}
+
+static void vec_erase(struct vec * self, int index)
+{
+    assert(self != NULL);
+    assert(self->_size >= index && "Index out of range");
+    memmove(VEC_AT(index), VEC_AT(index+1), self->_elemsize*(self->_size-index));
+    self->_size--;
 }
