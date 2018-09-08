@@ -6,7 +6,7 @@ include(Project.cmake)
 
 #Project Sources
 set (PROJECT_SOURCES 
-    ${PROJECT_SOURCE_DIR}/source.c
+    ${PROJECT_SOURCE_DIR}/vec.c
 )
 
 #Add the library as static
