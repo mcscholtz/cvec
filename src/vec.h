@@ -1,7 +1,6 @@
+/* Copyright Marius Scholtz <mc.scholtz@gmail.com> 2018 */
 #ifndef __VEC_H
 #define __VEC_H
-
-//basically write a dynamic array
 
 struct vec {
     //Adds an item to the next index, increment the index, possible rezie the array

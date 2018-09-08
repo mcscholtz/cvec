@@ -1,3 +1,4 @@
+/* Copyright Marius Scholtz <mc.scholtz@gmail.com> 2018 */
 #include "vec.h"
 #include <stdlib.h>
 #include <string.h>
@@ -138,7 +139,6 @@ static void vec_push_at(struct vec * self, int index, void * elem)
 {
     assert(self != NULL);
     if(self->_capacity == self->_size){
-        //realloc
         vec_realloc(self, self->_capacity*2);
     }
     //move all items up by 1
