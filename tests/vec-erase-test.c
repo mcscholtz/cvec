@@ -25,12 +25,6 @@ void vec_at_test(CuTest * tc)
     CuAssertIntEquals(tc, 4, v._size);
     CuAssertIntEquals(tc, 4, v._capacity);
 
-    for(int i = 0; i < 4; i++){
-        int ret;
-        v.at(&v,i,&ret);
-        printf("[%d]:%d\n",i,ret);
-    }
-
     v.erase(&v, 0);
     CuAssertIntEquals(tc, 3, v._size);
     CuAssertIntEquals(tc, 4, v._capacity);
@@ -41,19 +35,11 @@ void vec_at_test(CuTest * tc)
     CuAssertIntEquals(tc, 1, v._size);
     CuAssertIntEquals(tc, 4, v._capacity);
 
-
-    for(int i = 0; i < v._size; i++){
-        int ret;
-        v.at(&v,i,&ret);
-        printf("[%d]:%d\n",i,ret);
-    }
-
     int ret;
     v.at(&v, 0, &ret);
     CuAssertIntEquals(tc, 2, ret);
     CuAssertIntEquals(tc, 1, v._size);
     CuAssertIntEquals(tc, 4, v._capacity);
-
 
     vec_delete(&v);
 }

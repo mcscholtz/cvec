@@ -13,8 +13,11 @@ static void vec_pushback(struct vec * self, void * elem);
 static void vec_popback(struct vec * self, void * elem);
 static void vec_reserve(struct vec * self, int size);
 static void vec_shrink(struct vec * self);
+static void vec_front(struct vec * self, void * elem);
+static void vec_back(struct vec * self, void * elem);
 static void vec_at(struct vec * self, int index, void * elem);
 static void vec_erase(struct vec * self, int index);
+
 
 struct vec vec_new(int elemsize)
 {
@@ -29,6 +32,8 @@ struct vec vec_new(int elemsize)
     self.reserve = vec_reserve;
     self.shrink = vec_shrink;
     self.at = vec_at;
+    self.front = vec_front;
+    self.back = vec_back;
     self.erase = vec_erase;
     return self;
 }
@@ -92,6 +97,16 @@ static void vec_shrink(struct vec * self)
     self->_capacity = self->_size;
 }
 
+static void vec_front(struct vec * self, void * elem)
+{
+    vec_at(self, 0, elem);
+}
+
+static void vec_back(struct vec * self, void * elem)
+{
+    vec_at(self, self->_size-1, elem);
+}
+
 static void vec_at(struct vec * self, int index, void * elem)
 {
     assert(self != NULL);
@@ -99,6 +114,7 @@ static void vec_at(struct vec * self, int index, void * elem)
     memcpy(elem,VEC_AT(index), self->_elemsize);
 }
 
+//Delete the element at the given index and shift all other elements up by 1
 static void vec_erase(struct vec * self, int index)
 {
     assert(self != NULL);

@@ -28,7 +28,7 @@ struct vec {
     //release memory till there is no extra memory
     void (*shrink)(struct vec * self);
     int _capacity;
-    int _size;
+    int _size; //points to the next free element
     int _elemsize;
     void * _array;
 };
