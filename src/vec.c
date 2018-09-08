@@ -17,6 +17,8 @@ static void vec_front(struct vec * self, void * elem);
 static void vec_back(struct vec * self, void * elem);
 static void vec_at(struct vec * self, int index, void * elem);
 static void vec_erase(struct vec * self, int index);
+static void vec_pop_at(struct vec * self, int index, void * elem);
+static void vec_push_at(struct vec * self, int index, void * elem);
 
 
 struct vec vec_new(int elemsize)
@@ -28,7 +30,9 @@ struct vec vec_new(int elemsize)
     self._array = malloc(elemsize);
     //add methods
     self.push_back = vec_pushback;
+    self.push_at = vec_push_at;
     self.pop_back = vec_popback;
+    self.pop_at = vec_pop_at;
     self.reserve = vec_reserve;
     self.shrink = vec_shrink;
     self.at = vec_at;
@@ -122,3 +126,26 @@ static void vec_erase(struct vec * self, int index)
     memmove(VEC_AT(index), VEC_AT(index+1), self->_elemsize*(self->_size-index));
     self->_size--;
 }
+
+static void vec_pop_at(struct vec * self, int index, void * elem)
+{
+    vec_at(self, index, elem);
+    vec_erase(self, index);
+}
+
+//insert an element and move the size of the array up by 1
+static void vec_push_at(struct vec * self, int index, void * elem)
+{
+    assert(self != NULL);
+    if(self->_capacity == self->_size){
+        //realloc
+        vec_realloc(self, self->_capacity*2);
+    }
+    //move all items up by 1
+    self->_size++;
+    memmove(VEC_AT(index+1), VEC_AT(index), self->_elemsize*(self->_size-index));
+    //copy element to index
+    memcpy(VEC_AT(index),elem,self->_elemsize);   
+}
+
+
